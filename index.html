@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mockup Mailbox</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        .inbox {
+            flex-grow: 1;
+            padding: 20px;
+        }
+        .email-list {
+            list-style: none;
+            padding: 0;
+        }
+        .email-item {
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .email-item.active {
+            background-color: #eee;
+        }
+        .compose-button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .search-bar {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+        }
+        .email-content {
+            border: 1px solid #ccc;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h2>Mockup Mailbox</h2>
+            <button class="compose-button" onclick="showCompose()">Compose</button>
+            <div class="search-bar">
+                <input type="text" placeholder="Search emails..." onkeyup="searchEmails()">
+            </div>
+            <ul class="email-list">
+                <li class="email-item" onclick="showEmail(0)">
+                    <b>John Doe</b> <span style="color:gray;">- Welcome to Mockup Mail!</span>
+                </li>
+                <li class="email-item" onclick="showEmail(1)">
+                    <b>Jane Smith</b> <span style="color:gray;">- Meeting next week</span>
+                </li>
+            </ul>
+        </div>
+        <div class="inbox">
+            <div class="email-content" id="emailContent">
+                <!-- Email content will be loaded here -->
+                Select an email to view.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const emailData = [
+            {
+                sender: "John Doe <john.doe@example.com>",
+                subject: "Welcome to Mockup Mail!",
+                body: "This is a sample email. You can't reply to this."
+            },
+            {
+                sender: "Jane Smith <jane.smith@example.com>",
+                subject: "Meeting next week",
+                body: "Hi there, could we schedule a meeting for next week? Thanks!"
+            }
+        ];
+
+        function showEmail(index) {
+            const emailContent = document.getElementById("emailContent");
+            const email = emailData[index];
+            emailContent.innerHTML = `
+                <h3>${email.subject}</h3>
+                <p>From: ${email.sender}</p>
+                <p>${email.body}</p>
+            `;
+
+            // Update active email item in the list
+            const emailItems = document.querySelectorAll(".email-item");
+            emailItems.forEach(item => item.classList.remove("active"));
+            emailItems[index].classList.add("active");
+        }
+
+        function showCompose() {
+            const emailContent = document.getElementById("emailContent");
+            emailContent.innerHTML = `
+                <h3>Compose New Email</h3>
+                <form>
+                    <input type="text" placeholder="To:" readonly><br>
+                    <input type="text" placeholder="Subject:" readonly><br>
+                    <textarea placeholder="Write your email..." readonly></textarea><br>
+                    <button type="button" disabled>Send</button>
+                </form>
+            `;
+        }
+
+        function searchEmails() {
+            // Simple search functionality (can be improved)
+            const searchTerm = document.querySelector(".search-bar input").value.toLowerCase();
+            const emailItems = document.querySelectorAll(".email-item");
+
+            emailItems.forEach(item => {
+                const textContent = item.textContent.toLowerCase();
+                if (textContent.includes(searchTerm)) {
+                    item.style.display = "block";
+                } else {
+                    item.style.display = "none";
+                }
+            });
+        }
+    </script>
+</body>
+</html>
